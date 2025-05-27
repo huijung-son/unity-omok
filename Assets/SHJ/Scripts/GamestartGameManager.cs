@@ -1,17 +1,21 @@
 using Photon.Pun;
-using Photon.Realtime;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static GomokuManager;
 
 public class GamestartGameManager : MonoBehaviourPunCallbacks
 {
+    // 박둑판 라인
     [SerializeField] private LineRenderer lineRenderer;
+    // 마우스 위치에따른 가장 가까운 지점 오브젝트
     [SerializeField] private GameObject hightLight;
+    // 흰 바둑알
     [SerializeField] private GameObject whiteBlock;
+    // 검은 바둑알
     [SerializeField] private GameObject blackBlock;
+    // 메뉴
+    [SerializeField] private Canvas menuCanvas;
 
     private Vector3 startPos = Vector3.zero;
     Vector3 minVector = Vector3.zero;
@@ -33,6 +37,8 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        menuCanvas.gameObject.SetActive(false);
+
         for (int i = 0; i < 15; ++i)
         {
             for (int j = 0; j < 15; ++j)
@@ -91,10 +97,6 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
     {
         if (Input.GetMouseButtonDown(0) && isMyTurn)
         {
-            foreach (Vector3 pos in fieldInPos)
-            {
-                Debug.Log(pos);
-            }
             bool isNotIn = !fieldInPos.Contains(cloneHightLight.transform.position);
             if (isNotIn)
             {
@@ -125,6 +127,11 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
                 Debug.Log("Do not position");
                 // message go
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            menuCanvas.gameObject.SetActive(!menuCanvas.gameObject.activeSelf);
         }
     }
 
