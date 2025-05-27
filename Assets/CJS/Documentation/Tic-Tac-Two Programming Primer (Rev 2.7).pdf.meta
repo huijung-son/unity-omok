@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8063f2d0186384f8ebdd7b5cbc72a077
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 3619
+  packageName: 'Tic-Tac-Two: Turn-Based Game Tutorial v2.1'
+  packageVersion: 2.1
+  assetPath: Assets/Documentation/Tic-Tac-Two Programming Primer (Rev 2.7).pdf
+  uploadId: 30869
