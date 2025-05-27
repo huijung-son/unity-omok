@@ -1,33 +1,35 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
-using Photon.Pun;
 using UnityEngine.UI;
+using Photon.Pun;
+using TMPro;
 
 public class LoginSceneController : MonoBehaviour
 {
-    [SerializeField] private TMP_InputField playerNameInput;
+    [SerializeField] private TMP_InputField inputPlayerName;
     [SerializeField] private Button confirmButton;
 
     private void Awake()
     {
-        confirmButton.onClick.AddListener(OnConfirmButtonClicked);
+        if (confirmButton == null || inputPlayerName == null)
+        {
+            return;
+        }
+
+        confirmButton.onClick.AddListener(OnConfirmClicked);
     }
 
-    // È®ÀÎ ¹öÆ° Å¬¸¯ ½Ã ´Ð³×ÀÓ ÀúÀå ÈÄ ·Îºñ ¾ÀÀ¸·Î ÀÌµ¿
-    private void OnConfirmButtonClicked()
+    private void OnConfirmClicked()
     {
-        string playerName = playerNameInput.text.Trim();
+        string playerName = inputPlayerName.text.Trim();
 
         if (string.IsNullOrEmpty(playerName))
         {
-            Debug.LogWarning("ÀÌ¸§À» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+            Debug.Log("ë‹‰ë„¤ìž„ ë¯¸ìž…ë ¥");
             return;
         }
 
         PhotonNetwork.NickName = playerName;
-        Debug.Log($"´Ð³×ÀÓ ¼³Á¤ ¿Ï·á: {playerName}");
-
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene("Lobby");
     }
 }
