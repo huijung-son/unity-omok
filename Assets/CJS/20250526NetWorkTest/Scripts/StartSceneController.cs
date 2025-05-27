@@ -10,16 +10,15 @@ public class StartSceneController : MonoBehaviour
     {
         if (startButton == null)
         {
-            Debug.LogError("Start ButtonÀÌ ¿¬°áµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogError("Start Button ì—°ê²° í•„ìš”");
             return;
         }
+
         startButton.onClick.AddListener(OnStartButtonClicked);
     }
 
-    // ½ÃÀÛ ¹öÆ° Å¬¸¯ ½Ã ·Î±×ÀÎ ¾ÀÀ¸·Î ÀüÈ¯
     private void OnStartButtonClicked()
     {
-        Debug.Log("½ÃÀÛ ¹öÆ° Å¬¸¯µÊ. ·Î±×ÀÎ ¾ÀÀ¸·Î ÀÌµ¿ÇÕ´Ï´Ù.");
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("Login");
     }
 }
