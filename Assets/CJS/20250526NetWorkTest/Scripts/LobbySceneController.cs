@@ -4,6 +4,7 @@ using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class LobbySceneController : MonoBehaviourPunCallbacks
 {
@@ -15,6 +16,8 @@ public class LobbySceneController : MonoBehaviourPunCallbacks
 
     [SerializeField] private Transform roomListContent;
     [SerializeField] private GameObject roomListItemPrefab;
+
+    [SerializeField] private Button startGameBtn;
 
     private byte maxPlayers = 2;
     private bool isMaxPlayerSelected = false;
@@ -38,10 +41,23 @@ public class LobbySceneController : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        startGameBtn.onClick.AddListener(() =>
+        {
+            photonView.RPC("OnGameStartButton", RpcTarget.All);
+        });
+
         if (roomListContent != null)
             roomListContent.gameObject.SetActive(false);
 
         ConnectToPhoton();
+    }
+
+    private void Update()
+    {
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.PlayerList.Length == 2)
+        {
+            startGameBtn.gameObject.SetActive(true);
+        }
     }
 
     private void ConnectToPhoton()
@@ -187,6 +203,13 @@ public class LobbySceneController : MonoBehaviourPunCallbacks
         itemScript?.SetRoomInfo(roomName, playerCount, maxPlayers, OnRoomListItemClicked);
         roomListItems.Add(item);
     }
+
+    [PunRPC]
+    public void OnGameStartButton()
+    {
+        SceneManager.LoadScene("GameStartScene");
+    }
+
 
     private void ClearRoomList()
     {

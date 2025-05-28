@@ -46,6 +46,7 @@ MonoBehaviour:
   - ExitGameRoom
   - WinerPlay
   - UpdateRoomPlayerCount
+  - OnGameStartButton
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
