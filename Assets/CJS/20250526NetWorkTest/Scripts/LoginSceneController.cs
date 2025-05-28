@@ -1,33 +1,49 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
-using Photon.Pun;
 using UnityEngine.UI;
+using Photon.Pun;
+using TMPro;
 
 public class LoginSceneController : MonoBehaviour
 {
-    [SerializeField] private TMP_InputField playerNameInput;
+    [SerializeField] private TMP_InputField inputPlayerName;
     [SerializeField] private Button confirmButton;
+    [SerializeField] private Animator animator;
 
     private void Awake()
     {
-        confirmButton.onClick.AddListener(OnConfirmButtonClicked);
+        if (confirmButton == null || inputPlayerName == null)
+        {
+            Debug.LogError("InputField 또는 Confirm Button이 연결되지 않았습니다.");
+            return;
+        }
+
+        if (animator == null)
+        {
+            Debug.LogError("Animator가 연결되지 않았습니다.");
+            return;
+        }
+
+        confirmButton.onClick.AddListener(OnConfirmClicked);
     }
 
-    // 확인 버튼 클릭 시 닉네임 저장 후 로비 씬으로 이동
-    private void OnConfirmButtonClicked()
+    private void OnConfirmClicked()
     {
-        string playerName = playerNameInput.text.Trim();
+        string playerName = inputPlayerName.text.Trim();
 
         if (string.IsNullOrEmpty(playerName))
         {
-            Debug.LogWarning("이름을 입력해주세요.");
+            Debug.Log("닉네임 미입력");
             return;
         }
 
         PhotonNetwork.NickName = playerName;
-        Debug.Log($"닉네임 설정 완료: {playerName}");
+        confirmButton.interactable = false;  
+        animator.SetBool("ConfirmClicked", true);
+    }
 
-        SceneManager.LoadScene(2);
+    public void OnAnimationEnd()
+    {
+        SceneManager.LoadScene("Lobby");
     }
 }

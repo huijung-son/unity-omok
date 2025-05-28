@@ -5,21 +5,31 @@ using UnityEngine.UI;
 public class StartSceneController : MonoBehaviour
 {
     [SerializeField] private Button startButton;
+    [SerializeField] private Animator animator;
 
     private void Awake()
     {
         if (startButton == null)
         {
-            Debug.LogError("Start Button이 연결되지 않았습니다.");
             return;
         }
+
+        if (animator == null)
+        {
+            return;
+        }
+
         startButton.onClick.AddListener(OnStartButtonClicked);
     }
 
-    // 시작 버튼 클릭 시 로그인 씬으로 전환
     private void OnStartButtonClicked()
     {
-        Debug.Log("시작 버튼 클릭됨. 로그인 씬으로 이동합니다.");
-        SceneManager.LoadScene(1);
+        animator.SetBool("StartClicked", true);
+        startButton.interactable = false; 
+    }
+
+    public void OnAnimationEnd()
+    {
+        SceneManager.LoadScene("Login");
     }
 }
