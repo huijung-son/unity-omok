@@ -5,12 +5,17 @@ using UnityEngine.UI;
 public class StartSceneController : MonoBehaviour
 {
     [SerializeField] private Button startButton;
+    [SerializeField] private Animator animator;
 
     private void Awake()
     {
         if (startButton == null)
         {
-            Debug.LogError("Start Button 연결 필요");
+            return;
+        }
+
+        if (animator == null)
+        {
             return;
         }
 
@@ -18,6 +23,12 @@ public class StartSceneController : MonoBehaviour
     }
 
     private void OnStartButtonClicked()
+    {
+        animator.SetBool("StartClicked", true);
+        startButton.interactable = false; 
+    }
+
+    public void OnAnimationEnd()
     {
         SceneManager.LoadScene("Login");
     }
