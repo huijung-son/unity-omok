@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -354,4 +355,192 @@ public class GomokuManager : MonoBehaviour
         }
     }
     */
+
+    public bool IsSamSam(GomokuStone _currentStone)
+    {
+        /*
+         [
+              0  1  2  3  4  5  6  7  8  9  10 11 12 13 14
+            0[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+            1[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+            2[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+            3[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+            4[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+            5[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+            6[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+            7[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+            8[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+            9[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+           10[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+           11[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+           12[*  *  X  *  *  *  *  *  *  *  *  *  *  *  *]
+           13[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+           14[*  *  *  *  *  *  *  *  *  *  *  *  *  *  *]
+                                                            ]
+        만약 12,2 곳에 돌을 놓을려고 하는 상황을 가정한다
+        그럼
+        12,0 - 12,1
+        11,1 - 12,0
+        11,2 - 10,2
+        11,3 - 10,4
+        12,3 - 12,4
+        13,3 - 14,4
+        13,2 - 14,2
+        13,1 - 14,0
+        이중 같은 돌이면서 횟수가 두번 이상이면 33조건으로 본다
+         */
+        if (_currentStone.Color == GomokuColor.White) { return false; }
+
+        int num = 0;
+        int x = _currentStone.XPos;
+        int y = _currentStone.YPos;
+        try // 12,1 - 12,0
+        {
+            if (board[x, y - 3].Color == GomokuColor.None)
+                num += board[x, y - 1].Color == _currentStone.Color && board[x, y - 2].Color == _currentStone.Color ? 1 : 0;
+        } 
+        catch (IndexOutOfRangeException)
+        {
+            Debug.Log("samsam IndexOutOfRangeException");
+        }
+
+        try // 11,1 - 10,0
+        {
+            if (board[x - 3, y - 3].Color == GomokuColor.None)
+                num += board[x - 1, y - 1].Color == _currentStone.Color && board[x - 2, y - 2].Color == _currentStone.Color ? 1 : 0;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            Debug.Log("samsam IndexOutOfRangeException");
+        }
+
+        try // 11,2 - 10,2
+        {
+            if (board[x - 3, y].Color == GomokuColor.None)
+                num += board[x - 1, y].Color == _currentStone.Color && board[x - 2, y].Color == _currentStone.Color ? 1 : 0;
+                if (num >= 2) return true;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            Debug.Log("samsam IndexOutOfRangeException");
+        }
+
+        try // 11,3 - 10,4
+        {
+            if (board[x - 3, y + 3].Color == GomokuColor.None)
+                num += board[x - 1, y + 1].Color == _currentStone.Color && board[x - 2, y + 2].Color == _currentStone.Color ? 1 : 0;
+                if (num >= 2) return true;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            Debug.Log("samsam IndexOutOfRangeException");
+        }
+
+        try // 12,3 - 12,4
+        {
+            if (board[x, y + 3].Color == GomokuColor.None)
+                num += board[x, y + 1].Color == _currentStone.Color && board[x, y + 2].Color == _currentStone.Color ? 1 : 0;
+                if (num >= 2) return true;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            Debug.Log("samsam IndexOutOfRangeException");
+        }
+
+        try // 13,3 - 14,4
+        {
+            if (board[x + 3, y + 3].Color == GomokuColor.None)
+                num += board[x + 1, y + 1].Color == _currentStone.Color && board[x + 2, y + 2].Color == _currentStone.Color ? 1 : 0;
+                if (num >= 2) return true;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            Debug.Log("samsam IndexOutOfRangeException");
+        }
+
+        try // 13,2 - 14,2
+        {
+            if (board[x + 3, y].Color == GomokuColor.None)
+                num += board[x + 1, y].Color == _currentStone.Color && board[x + 2, y].Color == _currentStone.Color ? 1 : 0;
+                if (num >= 2) return true;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            Debug.Log("samsam IndexOutOfRangeException");
+        }
+
+        try // 13,1 - 14,0
+        {
+            if (board[x + 3, y - 3].Color == GomokuColor.None)
+                num += board[x + 1, y - 1].Color == _currentStone.Color && board[x + 2, y - 2].Color == _currentStone.Color ? 1 : 0;
+                if (num >= 2) return true;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            Debug.Log("samsam IndexOutOfRangeException");
+        }
+
+        if (num == 1)
+        {
+            // 위의 조건에서 num == 1이고 내자리 포함 위아래 좌우 대각선 3이면 금수
+            // 12,2
+
+            // 12,1 - 12,3
+            // 11,1 - 13,3
+            // 11,2 - 13,2
+            // 11,3 - 13,1
+
+            try // 12,1 - 12,3
+            {
+                num += board[x, y - 1].Color == _currentStone.Color && board[x, y + 1].Color == _currentStone.Color ? 1 : 0;
+                if (num >= 2) return true;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Debug.Log("samsam IndexOutOfRangeException");
+            }
+
+            try // 11,1 - 13,3
+            {
+                num += board[x - 1, y - 1].Color == _currentStone.Color && board[x + 1, y + 1].Color == _currentStone.Color ? 1 : 0;
+                if (num >= 2) return true;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Debug.Log("samsam IndexOutOfRangeException");
+            }
+
+            try // 11,2 - 13,2
+            {
+                num += board[x - 1, y].Color == _currentStone.Color && board[x + 1, y].Color == _currentStone.Color ? 1 : 0;
+                if (num >= 2) return true;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Debug.Log("samsam IndexOutOfRangeException");
+            }
+
+            try // 11,3 - 13,1
+            {
+                num += board[x - 1, y + 1].Color == _currentStone.Color && board[x + 1, y - 1].Color == _currentStone.Color ? 1 : 0;
+                if (num >= 2) return true;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Debug.Log("samsam IndexOutOfRangeException");
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsJangMok()
+    {
+        return false;
+    }
+
+    public bool IsSaSa()
+    {
+        return false;
+    }
 }

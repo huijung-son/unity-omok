@@ -111,11 +111,10 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
             bool isNotIn = !fieldInPos.Contains(cloneHightLight.transform.position);
             if (isNotIn)
             {
-                GameObject newBlock = PhotonNetwork.Instantiate(selectBlock.name, cloneHightLight.transform.position, whiteBlock.transform.rotation);
                 GomokuStone stone = new GomokuStone();
                 stone.Color = GomokuColor.None;
-                stone.XPos = (int)newBlock.transform.position.x + 7;
-                stone.YPos = (int)newBlock.transform.position.y + 7;
+                stone.XPos = (int)cloneHightLight.transform.position.x + 7;
+                stone.YPos = (int)cloneHightLight.transform.position.y + 7;
                 if (selectBlock == blackBlock)
                 {
                     stone.Color = GomokuColor.Black;
@@ -124,6 +123,15 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
                 {
                     stone.Color = GomokuColor.White;
                 }
+
+                bool isSamSam = gmHDG.IsSamSam(stone);
+                if (isSamSam)
+                {
+                    Debug.Log("Do not position");
+                    return;
+                }
+
+                GameObject newBlock = PhotonNetwork.Instantiate(selectBlock.name, cloneHightLight.transform.position, whiteBlock.transform.rotation);
                 gmHDG.board[stone.XPos, stone.YPos] = stone;
                 photonView.RPC("AppendFieldPos", RpcTarget.All, cloneHightLight.transform.position);
                 photonView.RPC("IsMyTurn", RpcTarget.Others);
