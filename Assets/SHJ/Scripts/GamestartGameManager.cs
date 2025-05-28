@@ -8,21 +8,21 @@ using static GomokuManager;
 
 public class GamestartGameManager : MonoBehaviourPunCallbacks
 {
-    // ¹ÚµÏÆÇ ¶óÀÎ
+    // ë°•ë‘‘íŒ ë¼ì¸
     [SerializeField] private LineRenderer lineRenderer;
-    // ¸¶¿ì½º À§Ä¡¿¡µû¸¥ °¡Àå °¡±î¿î ÁöÁ¡ ¿ÀºêÁ§Æ®
+    // ë§ˆìš°ìŠ¤ ìœ„ì¹˜ì—ë”°ë¥¸ ê°€ì¥ ê°€ê¹Œìš´ ì§€ì  ì˜¤ë¸Œì íŠ¸
     [SerializeField] private GameObject hightLight;
-    // Èò ¹ÙµÏ¾Ë
+    // í° ë°”ë‘‘ì•Œ
     [SerializeField] private GameObject whiteBlock;
-    // °ËÀº ¹ÙµÏ¾Ë
+    // ê²€ì€ ë°”ë‘‘ì•Œ
     [SerializeField] private GameObject blackBlock;
-    // ¸Ş´º
+    // ë©”ë‰´
     [SerializeField] private Canvas menuCanvas;
-    // °ÔÀÓ Á¾·á ¹öÆ°
+    // ê²Œì„ ì¢…ë£Œ ë²„íŠ¼
     [SerializeField] private Button exitGameBtn;
-    // °ÔÀÓ ½Â¸®½Ã Ç¥½Ã TMP
+    // ê²Œì„ ìŠ¹ë¦¬ì‹œ í‘œì‹œ TMP
     [SerializeField] private TextMeshProUGUI textMeshProUGUI;
-    //ÀÌÆåÆ® ÇÁ¸®ÆÕ
+    //ì´í™íŠ¸ í”„ë¦¬íŒ¹
     [SerializeField] private GameObject[] placeEffectPrefabs;
     
     
@@ -31,17 +31,17 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
     private Camera cam;
     private GameObject cloneHightLight;
 
-    // ÇÊµå¿¡ ³õÀ»¼ö ÀÖ´Â Æ÷Áö¼Çµé
+    // í•„ë“œì— ë†“ì„ìˆ˜ ìˆëŠ” í¬ì§€ì…˜ë“¤
     private Vector3[] fieldPos = null;
-    // ÇÊµå¿¡ ³õÀÎ µ¹ Æ÷Áö¼Çµé
+    // í•„ë“œì— ë†“ì¸ ëŒ í¬ì§€ì…˜ë“¤
     private List<Vector3> fieldInPos = null;
-    // Èæµ¹ ÇÃ·¹ÀÌ¾î ¸ÕÀú
+    // í‘ëŒ í”Œë ˆì´ì–´ ë¨¼ì €
     private bool isFirst = true;
-    // À§ÀÇ ºÒ¸°°ªÀ¸·Î ¼±ÅÃµÈ µ¹
+    // ìœ„ì˜ ë¶ˆë¦°ê°’ìœ¼ë¡œ ì„ íƒëœ ëŒ
     private GameObject selectBlock = null;
-    // ³» Â÷·ÊÀÎÁö
+    // ë‚´ ì°¨ë¡€ì¸ì§€
     private bool isMyTurn = false;
-    // ÀÌ±æ¶§±îÁö °ÔÀÓ ÇÏ´Â ºÒ¸°
+    // ì´ê¸¸ë•Œê¹Œì§€ ê²Œì„ í•˜ëŠ” ë¶ˆë¦°
     private bool isWin = false;
 
     private GomokuManager gmHDG = new GomokuManager();
@@ -128,8 +128,8 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
 
                 GomokuStone stone = new GomokuStone();
                 stone.Color = GomokuColor.None;
-                stone.XPos = (int)newBlock.transform.position.x + 7;
-                stone.YPos = (int)newBlock.transform.position.y + 7;
+                stone.XPos = (int)cloneHightLight.transform.position.x + 7;
+                stone.YPos = (int)cloneHightLight.transform.position.y + 7;
                 if (selectBlock == blackBlock)
                 {
                     stone.Color = GomokuColor.Black;
@@ -138,6 +138,15 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
                 {
                     stone.Color = GomokuColor.White;
                 }
+
+                bool isSamSam = gmHDG.IsSamSam(stone);
+                if (isSamSam)
+                {
+                    Debug.Log("Do not position");
+                    return;
+                }
+
+                GameObject newBlock = PhotonNetwork.Instantiate(selectBlock.name, cloneHightLight.transform.position, whiteBlock.transform.rotation);
                 gmHDG.board[stone.XPos, stone.YPos] = stone;
                 photonView.RPC("AppendFieldPos", RpcTarget.All, cloneHightLight.transform.position);
                 photonView.RPC("IsMyTurn", RpcTarget.Others);
