@@ -116,16 +116,6 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
             bool isNotIn = !fieldInPos.Contains(cloneHightLight.transform.position);
             if (isNotIn)
             {
-                GameObject newBlock = PhotonNetwork.Instantiate(selectBlock.name, cloneHightLight.transform.position, whiteBlock.transform.rotation);
-
-                if (placeEffectPrefabs != null && placeEffectPrefabs.Length > 0)
-                {
-                    int randomIndex = Random.Range(0, placeEffectPrefabs.Length);
-                    GameObject effectPrefab = placeEffectPrefabs[randomIndex];
-
-                    PhotonNetwork.Instantiate(effectPrefab.name, placePos, Quaternion.identity);
-                }
-
                 GomokuStone stone = new GomokuStone();
                 stone.Color = GomokuColor.None;
                 stone.XPos = (int)cloneHightLight.transform.position.x + 7;
@@ -147,6 +137,13 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
                 }
 
                 GameObject newBlock = PhotonNetwork.Instantiate(selectBlock.name, cloneHightLight.transform.position, whiteBlock.transform.rotation);
+                if (placeEffectPrefabs != null && placeEffectPrefabs.Length > 0)
+                {
+                    int randomIndex = Random.Range(0, placeEffectPrefabs.Length);
+                    GameObject effectPrefab = placeEffectPrefabs[randomIndex];
+
+                    PhotonNetwork.Instantiate(effectPrefab.name, placePos, Quaternion.identity);
+                }
                 gmHDG.board[stone.XPos, stone.YPos] = stone;
                 photonView.RPC("AppendFieldPos", RpcTarget.All, cloneHightLight.transform.position);
                 photonView.RPC("IsMyTurn", RpcTarget.Others);
