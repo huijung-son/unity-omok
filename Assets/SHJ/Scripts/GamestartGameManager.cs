@@ -129,12 +129,12 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
                     stone.Color = GomokuColor.White;
                 }
 
-                bool isSamSam = gmHDG.IsSamSam(stone);
-                if (isSamSam)
-                {
-                    Debug.Log("Do not position");
-                    return;
-                }
+                // bool isSamSam = gmHDG.IsSamSam(stone);
+                // if (isSamSam)
+                // {
+                //     Debug.Log("Do not position");
+                //     return;
+                // }
 
                 GameObject newBlock = PhotonNetwork.Instantiate(selectBlock.name, cloneHightLight.transform.position, whiteBlock.transform.rotation);
                 if (placeEffectPrefabs != null && placeEffectPrefabs.Length > 0)
