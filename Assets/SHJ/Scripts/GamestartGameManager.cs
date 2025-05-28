@@ -22,7 +22,10 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
     [SerializeField] private Button exitGameBtn;
     // °ÔÀÓ ½Â¸®½Ã Ç¥½Ã TMP
     [SerializeField] private TextMeshProUGUI textMeshProUGUI;
-
+    //ÀÌÆåÆ® ÇÁ¸®ÆÕ
+    [SerializeField] private GameObject[] placeEffectPrefabs;
+    
+    
     private Vector3 startPos = Vector3.zero;
     Vector3 minVector = Vector3.zero;
     private Camera cam;
@@ -108,10 +111,21 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
     {
         if (Input.GetMouseButtonDown(0) && isMyTurn)
         {
+            Vector3 placePos = cloneHightLight.transform.position;
+
             bool isNotIn = !fieldInPos.Contains(cloneHightLight.transform.position);
             if (isNotIn)
             {
                 GameObject newBlock = PhotonNetwork.Instantiate(selectBlock.name, cloneHightLight.transform.position, whiteBlock.transform.rotation);
+
+                if (placeEffectPrefabs != null && placeEffectPrefabs.Length > 0)
+                {
+                    int randomIndex = Random.Range(0, placeEffectPrefabs.Length);
+                    GameObject effectPrefab = placeEffectPrefabs[randomIndex];
+
+                    PhotonNetwork.Instantiate(effectPrefab.name, placePos, Quaternion.identity);
+                }
+
                 GomokuStone stone = new GomokuStone();
                 stone.Color = GomokuColor.None;
                 stone.XPos = (int)newBlock.transform.position.x + 7;
