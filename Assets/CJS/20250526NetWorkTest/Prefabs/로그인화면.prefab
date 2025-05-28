@@ -359,7 +359,7 @@ GameObject:
   - component: {fileID: 4141145074011879187}
   - component: {fileID: 3947436302086547878}
   - component: {fileID: 303684601545635507}
-  - component: {fileID: -5997104133864390052}
+  - component: {fileID: 8987908897538008945}
   m_Layer: 5
   m_Name: "\uB85C\uADF8\uC778\uD654\uBA74"
   m_TagString: Untagged
@@ -456,7 +456,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &-5997104133864390052
+--- !u!114 &8987908897538008945
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -468,8 +468,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cf633c07d42fb045a9bc944e86ddddd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNameInput: {fileID: 0}
-  confirmButton: {fileID: 0}
+  inputPlayerName: {fileID: 5489588267628258610}
+  confirmButton: {fileID: 1816227566159292931}
 --- !u!1 &5241968025881129485
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,7 +535,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ded5e09445fb3054ab84f3acd8c7cd79, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1d765d421416ef640a2e935e75cc16d7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

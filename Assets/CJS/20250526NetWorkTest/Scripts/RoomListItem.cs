@@ -23,4 +23,9 @@ public class RoomListItem : MonoBehaviour
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() => onClickCallback?.Invoke(roomName));
     }
+    public void UpdatePlayerCount(int playerCount, int maxPlayers)
+    {
+        playerCountText.text = $"{playerCount} / {maxPlayers}";
+    }
+
 }
