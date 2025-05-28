@@ -24,7 +24,8 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
     [SerializeField] private TextMeshProUGUI textMeshProUGUI;
     //이펙트 프리팹
     [SerializeField] private GameObject[] placeEffectPrefabs;
-    
+    // 타이머 텍스트
+    [SerializeField] private TextMeshProUGUI timeText;
     
     private Vector3 startPos = Vector3.zero;
     Vector3 minVector = Vector3.zero;
@@ -43,6 +44,19 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
     private bool isMyTurn = false;
     // 이길때까지 게임 하는 불린
     private bool isWin = false;
+    // 타이머
+    private float time = 0;
+
+    public float TimeSet
+    {
+        set
+        {
+            timeText.text = value.ToString("0.00");
+            time = value;
+        }
+
+        get { return time; }
+    }
 
     private GomokuManager gmHDG = new GomokuManager();
 
@@ -148,6 +162,8 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
                 photonView.RPC("AppendFieldPos", RpcTarget.All, cloneHightLight.transform.position);
                 photonView.RPC("IsMyTurn", RpcTarget.Others);
                 isMyTurn = false;
+                TimeSet = 0;
+                timeText.color = Color.white;
 
                 isWin = gmHDG.CheckWin(stone);
                 if (isWin)
@@ -166,6 +182,24 @@ public class GamestartGameManager : MonoBehaviourPunCallbacks
         if (Input.GetKeyDown(KeyCode.Escape) && !isWin)
         {
             menuCanvas.gameObject.SetActive(!menuCanvas.gameObject.activeSelf);
+        }
+
+        if (isMyTurn)
+        {
+            TimeSet += Time.deltaTime;
+        }
+
+        if (isMyTurn && time >= 20f)
+        {
+            timeText.color = Color.red;
+        }
+
+        if (isMyTurn && time >= 30f)
+        {
+            photonView.RPC("IsMyTurn", RpcTarget.Others);
+            isMyTurn = false;
+            timeText.color = Color.white;
+            TimeSet = 0;
         }
     }
 
