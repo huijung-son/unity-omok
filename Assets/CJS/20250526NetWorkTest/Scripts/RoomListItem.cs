@@ -4,7 +4,9 @@ using UnityEngine.UI;
 
 public class RoomListItem : MonoBehaviour
 {
+    //방이름
     [SerializeField] private TMP_Text roomNameText;
+    //인원
     [SerializeField] private TMP_Text playerCountText;
 
     private Button button;
